@@ -8,14 +8,16 @@ today = datetime.now()
 
 # Calcular el lunes de la semana actual (offset-naive)
 start_date = datetime(today.year, today.month, today.day) - timedelta(days=today.weekday())
-# Calcular el viernes de la semana actual (offset-naive)
-end_date = start_date + timedelta(days=5)
+# Calcular el domingo de la semana actual (offset-naive)
+end_date = start_date + timedelta(days=6, hours=23, minutes=59, seconds=59)
 
-# Formatear las fechas para el filtro
-start_date_str = start_date.strftime("%Y-%m-%d %H:%M")
-end_date_str = end_date.strftime("%Y-%m-%d %H:%M")
+# Formatear las fechas para el filtro en formato de Outlook
+start_date_str = start_date.strftime("%d/%m/%Y %H:%M %p")
+end_date_str = end_date.strftime("%d/%m/%Y %H:%M %p")
 # Formatear la fecha del viernes en formato AAAA-MM-DD
 friday_date_str = end_date.strftime("%Y-%m-%d")
+print("start date: " + str(start_date_str))
+print("end date: " + str(end_date_str))
 
 # Conectar a Outlook
 outlook = win32com.client.Dispatch("Outlook.Application")
@@ -26,6 +28,7 @@ calendar = namespace.GetDefaultFolder(9)  # 9 es el índice para la carpeta del 
 
 # Crear un filtro para las fechas
 restriction = f"[Start] >= '{start_date_str}' AND [Start] <= '{end_date_str}'"
+print("restriction: " + restriction)
 calendar_items = calendar.Items.Restrict(restriction)
 calendar_items.IncludeRecurrences = True
 calendar_items.Sort("[Start]")
