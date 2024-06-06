@@ -9,7 +9,7 @@ today = datetime.now()
 # Calcular el lunes de la semana actual (offset-naive)
 start_date = datetime(today.year, today.month, today.day) - timedelta(days=today.weekday())
 # Calcular el domingo de la semana actual (offset-naive)
-end_date = start_date + timedelta(days=6, hours=23, minutes=59, seconds=59)
+end_date = start_date + timedelta(days=4, hours=23, minutes=59, seconds=59)
 
 # Formatear las fechas para el filtro en formato de Outlook
 start_date_str = start_date.strftime("%d/%m/%Y %H:%M %p")
