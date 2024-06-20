@@ -29,7 +29,7 @@ calendar_items.IncludeRecurrences = True
 calendar_items.Sort("[Start]")
 
 # Crear un archivo Excel
-output_file = "Calendario_Outlook.xlsx"
+output_file = "reporte.xlsx"
 
 # Eliminar el archivo existente si existe
 if os.path.exists(output_file):
@@ -38,7 +38,7 @@ if os.path.exists(output_file):
 wb = openpyxl.Workbook()
 ws = wb.active
 ws.title = "Eventos del Calendario"
-ws.append(["Nombre del Evento", "Categorías", "Fecha", "Duración (horas)"])
+ws.append(["timeSpent", "date", "consecutivo", "concept", "comment", "tareaId"])
 
 # Agregar eventos al archivo Excel después de filtrarlos nuevamente
 for appointment in calendar_items:
@@ -53,10 +53,12 @@ for appointment in calendar_items:
     
     if start_date <= appointment_start <= end_date:
         name = appointment.Subject
-        categories = appointment.Categories
-        event_date = appointment_start.strftime("%Y-%m-%d %H:%M")
-        duration_hours = (appointment_end - appointment_start).total_seconds() / 3600  # Duración en horas
-        ws.append([name, categories, event_date, round(duration_hours, 2)])
+        categories = appointment.Categories.split(';') if appointment.Categories else []
+        if len(categories) == 2:  # Solo incluir eventos con exactamente dos categorías
+            category2_number = categories[1].split()[0]  # Tomar solo la parte numérica de la segunda categoría
+            event_date = appointment_start.strftime("%Y-%m-%d")  # Formatear solo la fecha sin la hora
+            duration_hours = (appointment_end - appointment_start).total_seconds() / 3600  # Duración en horas
+            ws.append([round(duration_hours, 2), event_date, category2_number, categories[0], name, ""])
 
 # Guardar el archivo Excel
 wb.save(output_file)
