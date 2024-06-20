@@ -15,7 +15,7 @@ Este proyecto permite extraer eventos del calendario de Outlook y exportarlos a 
 Para clonar el repositorio, abre una terminal y ejecuta el siguiente comando:
 
 ```bash
-git clone https://github.com/mateoloperac/reporte-horas
+git clone https://github.com/prevalentWare/reporte-horas
 ```
 
 En la terminal navegar al proyecto
